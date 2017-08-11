@@ -117,12 +117,14 @@ def color_gradient_threshold(img):
     return resultant
 
 
-def get_source_destination_points(img, img_height, img_width, offset=100):
+def get_source_destination_points(img, offset=100):
     import numpy as np
     # y tilt --> img_height / 2 + offset
     # x tilt --> spacing between both lanes
     x_tilt, y_tilt = 55, 450
+    img_height, img_width = img.shape[0], img.shape[1]
     img_center = (img_width / 2)
+
     src = np.float32([
         [offset, img_height],
         [img_center - x_tilt, y_tilt],
@@ -135,17 +137,39 @@ def get_source_destination_points(img, img_height, img_width, offset=100):
         [img_height - offset, 0],
         [img_height - offset, img_width]
     ])
+
     return src, dst
 
 
-def perspective_transform(img, nx, ny):
+def get_source_destination_images(img, src, dst):
+    import numpy as np
+    import cv2 as cv
+
+    img_height, img_width = img.shape[0], img.shape[1]
+    transform_matrix = cv.getPerspectiveTransform(src, dst)
+    img_src = np.copy(img)
+    img_dst = cv.warpPerspective(img, transform_matrix,
+                                 (img_height, img_width),
+                                 flags=cv.INTER_LINEAR)
+
+    src_pts = np.array(src, np.int32).reshape((-1, 1, 2))
+    dst_pts = np.array(dst, np.int32).reshape((-1, 1, 2))
+
+    cv.polylines(img_src, [src_pts], True, (255, 0, 0), thickness=5)
+    cv.polylines(img_dst, [dst_pts], True, (255, 0, 0), thickness=5)
+
+    return img_src, img_dst
+
+
+def perspective_transform(img, src, dst):
     import cv2 as cv
     img_height, img_width = img.shape[0], img.shape[1]
-    src, dst = get_source_destination_points(img, img_height, img_width)
     # use cv2.getPerspectiveTransform() to get M, the transform matrix
     transform_matrix = cv.getPerspectiveTransform(src, dst)
     # use cv2.warpPerspective() to warp your image to a top-down view
-    transformed_image = cv.warpPerspective(img, transform_matrix, (img_height, img_width), flags=cv.INTER_LINEAR)
+    transformed_image = cv.warpPerspective(img, transform_matrix,
+                                           (img_height, img_width),
+                                           flags=cv.INTER_LINEAR)
     return transformed_image
 
 
@@ -248,10 +272,8 @@ def histogram_sliding_window(img):
     right = rightx, righty
     nonzero = nonzerox, nonzeroy
 
-    # visualize_sliding_window(img, out_img, nonzero, inds, fit)
-    # import cv2
-    # cv2.imshow("image", img)
-    # cv2.waitKey()
+    visualize_sliding_window(img, out_img, nonzero, inds, fit)
+
     return out_img, fit, left, right
 
 
@@ -272,21 +294,32 @@ def visualize_sliding_window(img, out_img, nonzero, inds, fit):
 
     out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 0]
     out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
-    plt.imshow(out_img)
-    plt.plot(left_fitx, ploty, color='yellow')
-    plt.plot(right_fitx, ploty, color='yellow')
-    plt.xlim(0, 1280)
-    plt.ylim(720, 0)
-    plt.show()
+
+    # plt.imshow(out_img)
+    # plt.plot(left_fitx, ploty, color='yellow')
+    # plt.plot(right_fitx, ploty, color='yellow')
+    # plt.xlim(0, 1280)
+    # plt.ylim(720, 0)
+    # plt.show()
+    return out_img
 
 
-def visualization(img1, img2, desc_img1, desc_img2):
+def visualization(img1, img2, img3, img4, img5, img6, img7, img8,
+                  desc_img1, desc_img2, desc_img3, desc_img4,
+                  desc_img5, desc_img6, desc_img7, desc_img8):
     import matplotlib.pyplot as plt
-    f, ax_array = plt.subplots(2, 1, figsize=(8, 8))
+    f, ax_array = plt.subplots(2, 4, figsize=(8, 8))
     f.tight_layout()
-    ax_array[0].imshow(img1, cmap="gray"), ax_array[0].set_title(desc_img1)
-    ax_array[1].imshow(img2, cmap="gray"), ax_array[1].set_title(desc_img2)
+    ax_array[0, 0].imshow(img1, cmap="gray"), ax_array[0, 0].set_title(desc_img1)
+    ax_array[0, 1].imshow(img2, cmap="gray"), ax_array[0, 1].set_title(desc_img2)
+    ax_array[0, 2].imshow(img3, cmap="gray"), ax_array[0, 2].set_title(desc_img3)
+    ax_array[0, 3].imshow(img4, cmap="gray"), ax_array[0, 3].set_title(desc_img4)
+    ax_array[1, 0].imshow(img5, cmap="gray"), ax_array[1, 0].set_title(desc_img5)
+    ax_array[1, 1].imshow(img6, cmap="gray"), ax_array[1, 1].set_title(desc_img6)
+    ax_array[1, 2].imshow(img7, cmap="gray"), ax_array[1, 2].set_title(desc_img7)
+    ax_array[1, 3].imshow(img8, cmap="gray"), ax_array[1, 3].set_title(desc_img8)
     plt.show()
+    # plt.pause(0.05)
 
 
 def visualize_lanes_histogram(img):
@@ -321,38 +354,68 @@ def get_curvature_radius(img, left, right):
     right_radius = (1 + (2 * right_fit_meter[0] * y * y_meter_per_pixel + right_fit_meter[1]) ** 2) ** (3 / 2)
     right_radius /= np.absolute(2 * right_fit_meter[0])
 
-    return left_radius, right_radius
+    return int(left_radius), int(right_radius)
 
 
 def get_distance_from_center(img, fit):
+    import numpy as np
+    # image dimensions
     img_height, img_width = img.shape[0], img.shape[1]
+    # pixel to meter factor
     x_meter_per_pixel = 3.7 / (img_height - 20)
+    # camera is mounted at the center of the car
     car_position = img_width / 2
-
+    # left and right polynomial fits
     right_fitx, left_fitx = fit
+    # lane width in which car is being driven
+    lane_width = abs(left_fitx - right_fitx)
+    # lane center is the midpoint at the bottom of the image
     lane_center = (left_fitx + right_fitx) / 2
+    # how much car is away from lane center
     center_distance = (car_position - lane_center) * x_meter_per_pixel
 
-    return center_distance
+    return center_distance[2], lane_width[2]
 
 
 def __main__():
     import matplotlib.image as mpimg
+    import matplotlib.pyplot as plt
     import glob
     nx, ny, channels = 9, 6, 3
     imgs = glob.glob("test_images/*.jpg")
     # Create empty lists to receive left and right lane pixel indices
     for file_name in imgs:
         img = mpimg.imread(file_name)
+        # calibrate camera and undistort the image
         undistorted_image = get_undistorted_image(nx, ny, img)
+        # get the color and gradient threshold image
         thresholded_image = color_gradient_threshold(undistorted_image)
-        transformed_image = perspective_transform(thresholded_image, nx, ny)
+        # get source and destination points
+        src, dst = get_source_destination_points(img)
+        # get image with source and destination points drawn
+        img_src, img_dst = get_source_destination_images(img, src, dst)
+        # perspective transform to bird eye view
+        transformed_image = perspective_transform(thresholded_image, src, dst)
+        # find the lanes lines and polynomial fit
         lane_lines, fit, left, right = histogram_sliding_window(transformed_image)
+        # find the radius of curvature
         radius = get_curvature_radius(lane_lines, left, right)
-        center_distance = get_distance_from_center(lane_lines, fit)
+        # find the car distance from center lane
+        center_distance, lane_width = get_distance_from_center(lane_lines, fit)
+        # visualize the results
+        visualization(img, undistorted_image, thresholded_image,
+                      img_src, img_dst,
+                      transformed_image, lane_lines, img,
+                      "Original", "Undistorted", "Thresholded",
+                      "Source Points", "Destination Points",
+                      "Transformed", "Lane Line", "Original")
 
         print("left radius: {}, right radius: {}".format(radius[0], radius[1]))
         print("distance from center: {}".format(center_distance))
+        print("lane width: {}".format(lane_width))
+
+        # while True:
+        #     plt.pause(1)
 
 
 __main__()
