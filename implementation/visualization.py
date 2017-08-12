@@ -1,6 +1,15 @@
 class Visualization:
     @staticmethod
     def visualize_lanes_fit(img, lanes_img, nonzero, inds, fit):
+        """
+        visualize the lanes fit
+        :param img: source warped binary image
+        :param lanes_img: destination warped binary image with lanes drawn
+        :param nonzero: nonzero pixels
+        :param inds: indices of the nonzero xy pixels
+        :param fit: left and right fit
+        :return lanes_img: destination warped binary image with lanes drawn
+        """
         # import numpy as np
 
         # Generate x and y values for plotting
@@ -11,32 +20,22 @@ class Visualization:
         lanes_img[nonzero_y[left_lane_inds], nonzero_x[left_lane_inds]] = [255, 0, 0]
         lanes_img[nonzero_y[right_lane_inds], nonzero_x[right_lane_inds]] = [0, 0, 255]
 
-        """
-        
-        Generate Plots in PyPlot:
-        
-        img_height = img.shape[0]
-        left_fit, right_fit = fit
-
-        using Ay^2 + By + C
-        plot_y = np.linspace(0, img_height - 1, img_height)
-        left_fitx = left_fit[0] * plot_y ** 2 + left_fit[1] * plot_y + left_fit[2]
-        right_fitx = right_fit[0] * plot_y ** 2 + right_fit[1] * plot_y + right_fit[2]
-        
-        plt.imshow(out_img)
-        plt.plot(left_fitx, plot_y, color='yellow')
-        plt.plot(right_fitx, plot_y, color='yellow')
-        plt.xlim(0, 1280)
-        plt.ylim(720, 0)
-        plt.show()
-        """
-
         return lanes_img
 
     @staticmethod
     def visualize_updated_lanes_fit(img, lanes_img, nonzero, inds, fit):
+        """
+        visualize updated lanes fit
+        :param img: source warped binary image
+        :param lanes_img: destination warped binary image with lanes drawn
+        :param nonzero: nonzero pixels
+        :param inds: indices of the nonzero xy pixels
+        :param fit: left and right fit
+        :return lanes_img: destination warped binary image with lanes drawn
+        """
         import numpy as np
         import cv2 as cv
+
         # Generate x and y values for plotting
         img_height = img.shape[0]
         left_lane_inds, right_lane_inds = inds
@@ -72,18 +71,12 @@ class Visualization:
 
         lanes_img = cv.addWeighted(lanes_img, 1, window_img, 0.3, 0)
 
-        # plt.imshow(lanes_img)
-        # plt.plot(left_fitx, plot_y, color='yellow')
-        # plt.plot(right_fitx, plot_y, color='yellow')
-        # plt.xlim(0, 1280)
-        # plt.ylim(720, 0)
-
         return lanes_img
 
     @staticmethod
-    def visualization_pipeline(img1, img2, img3, img4, img5, img6, img7, img8,
-                               desc_img1, desc_img2, desc_img3, desc_img4,
-                               desc_img5, desc_img6, desc_img7, desc_img8):
+    def visualize_pipeline_pyplot(img1, img2, img3, img4, img5, img6, img7, img8,
+                                  desc_img1, desc_img2, desc_img3, desc_img4,
+                                  desc_img5, desc_img6, desc_img7, desc_img8):
         import matplotlib.pyplot as plt
         f, ax_array = plt.subplots(2, 4, figsize=(8, 8))
         f.tight_layout()
@@ -96,13 +89,6 @@ class Visualization:
         ax_array[1, 2].imshow(img7, cmap="gray"), ax_array[1, 2].set_title(desc_img7)
         ax_array[1, 3].imshow(img8, cmap="gray"), ax_array[1, 3].set_title(desc_img8)
         plt.show()
-        # visualize the results
-        # visualization_pipeline(img, undistorted_image, thresholded_image,
-        #               img_src, img_dst,
-        #               transformed_image, lane_lines, img,
-        #               "Original", "Undistorted", "Thresholded",
-        #               "Source Points", "Destination Points",
-        #               "Transformed", "Lane Line", "Original")
 
     @staticmethod
     def get_lanes_histogram(img):
@@ -111,24 +97,34 @@ class Visualization:
         return histogram
 
     @staticmethod
-    def visualize_pipeline(img, resultant, img_dst, lane_lines, radius, center_distance, lane_width):
+    def visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width):
+        """
+        visualize the important steps of the pipeline
+        :param resultant: resultant image of the pipeline
+        :param img_dst: wrapped binary image
+        :param lane_lines: wrapped binary image with lane lines
+        :param radius: radius of curvature
+        :param center_distance: car distance from center lane
+        :param lane_width: width of the lane
+        :return: None
+        """
         import cv2 as cv
+
         # debugging parameters
         print("left radius: {}, right radius: {}".format(radius[0], radius[1]))
         print("distance from center: {}".format(center_distance))
         print("lane width: {}".format(lane_width))
         print("\n")
 
-        img = cv.resize(img, None, fx=0.5, fy=0.5, interpolation=cv.INTER_LINEAR)
-        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-
+        # resize the image for better visualization
         resultant = cv.resize(resultant, None, fx=0.5, fy=0.5, interpolation=cv.INTER_LINEAR)
         resultant = cv.cvtColor(resultant, cv.COLOR_BGR2RGB)
 
+        # resize the image for better visualization
         img_dst = cv.resize(img_dst, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
         lane_lines = cv.resize(lane_lines, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
 
-        cv.imshow("input image", img)
+        # show the images with 1 ms delay
         cv.imshow("warped detected lines", lane_lines)
         cv.imshow("warped lines", img_dst)
         cv.imshow("result", resultant)

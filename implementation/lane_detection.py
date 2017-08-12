@@ -21,7 +21,7 @@ class LaneDetection:
         src, dst = PerspectiveTransform.get_perspective_points(img)
 
         # get image with source and destination points drawn
-        img_src, img_dst = PerspectiveTransform.get_perspective_image(img, src, dst)
+        img_src, img_dst = PerspectiveTransform.get_sample_wrapped_images(img, src, dst)
 
         # perspective transform to bird eye view
         warped_image = PerspectiveTransform.get_wrapped_image(binary_image, src, dst)
@@ -42,6 +42,6 @@ class LaneDetection:
         resultant = PerspectiveTransform.get_unwrapped_image(undistorted_image, warped_image, src, dst, lanes_fit)
 
         # visualize the pipeline
-        Visualization.visualize_pipeline(img, resultant, img_dst, lane_lines,
-                                         radius, center_distance, lane_width)
+        Visualization.visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width)
+
         return lanes_fit
