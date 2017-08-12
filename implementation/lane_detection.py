@@ -1,7 +1,3 @@
-import sys
-
-sys.path.append("implementation/")
-
 from perspective_transform import PerspectiveTransform
 from pre_processing import PreProcessing
 from visualization import Visualization

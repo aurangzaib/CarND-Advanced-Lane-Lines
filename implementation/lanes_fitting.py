@@ -1,6 +1,3 @@
-import sys
-
-sys.path.append("implementation/")
 from visualization import Visualization
 
 
