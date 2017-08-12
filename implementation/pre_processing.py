@@ -68,7 +68,7 @@ class PreProcessing:
                                          patternSize=(nx, ny),
                                          corners=corners,
                                          patternWasFound=found)
-                
+
         # use an image to find camera matrix and distortion coef
         test_img = mpimg.imread("camera_cal/calibration4.jpg")
         # find camera matrix and distortion coef
@@ -101,6 +101,7 @@ class PreProcessing:
                                    distCoeffs=dist_coef,
                                    dst=None,
                                    newCameraMatrix=camera_matrix)
+
         return undistorted
 
     @staticmethod
@@ -115,6 +116,7 @@ class PreProcessing:
         :param hls_thresh: threshold range for s channel in HLS
         :return: binary image
         """
+        from helper import Helper
         import numpy as np
         import cv2 as cv
 
@@ -145,5 +147,5 @@ class PreProcessing:
         # resultant of r, s and sx
         binary_image = np.zeros_like(sx_binary)
         binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
-
+        # Helper.save_binarized_image(img, binary_image)
         return binary_image
