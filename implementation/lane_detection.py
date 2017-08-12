@@ -1,8 +1,12 @@
-from implementation.perspective_transform import PerspectiveTransform
-from implementation.pre_processing import PreProcessing
-from implementation.visualization import Visualization
-from implementation.lanes_fitting import LanesFitting
-from implementation.metrics import Metrics
+import sys
+
+sys.path.append("implementation/")
+
+from perspective_transform import PerspectiveTransform
+from pre_processing import PreProcessing
+from visualization import Visualization
+from lanes_fitting import LanesFitting
+from metrics import Metrics
 
 
 class LaneDetection:

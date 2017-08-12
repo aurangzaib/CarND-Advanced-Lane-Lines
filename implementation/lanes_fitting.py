@@ -1,4 +1,7 @@
-from implementation.visualization import Visualization
+import sys
+
+sys.path.append("implementation/")
+from visualization import Visualization
 
 
 class LanesFitting:

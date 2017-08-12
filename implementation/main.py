@@ -1,4 +1,7 @@
-from implementation.lane_detection import LaneDetection
+import sys
+
+sys.path.append("implementation/")
+from lane_detection import LaneDetection
 
 
 def __main__():
