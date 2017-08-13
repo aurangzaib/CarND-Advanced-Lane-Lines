@@ -1,40 +1,5 @@
 class Metrics:
     @staticmethod
-    def get_distance_from_center(img, fit):
-        """
-        find the distance of the car from the center lane
-        get the car position -> center of the image
-        get lane width  -> difference of left fit and right fit
-        get center lane -> midpoint of left fit and right fit
-        get distance from center lane -> (car position - lane center) * (meter per pixel)
-        :param img: warped binary image with detected lane lines drawn
-        :param fit: lanes polynomial fit
-        :return: center_distance: car distance from center
-        """
-        # image dimensions
-        img_height, img_width = img.shape[0], img.shape[1]
-
-        # pixel to meter factor
-        x_meter_per_pixel = 3.7 / (img_height - 20)
-
-        # camera is mounted at the center of the car
-        car_position = img_width / 2
-
-        # left and right polynomial fits
-        right_fit, left_fit = fit
-
-        # lane width in which car is being driven
-        lane_width = abs(left_fit - right_fit)
-
-        # lane center is the midpoint at the bottom of the image
-        lane_center = (left_fit + right_fit) / 2
-
-        # how much car is away from lane center
-        center_distance = (car_position - lane_center) * x_meter_per_pixel
-
-        return center_distance[2], abs(lane_width[2])
-
-    @staticmethod
     def get_curvature_radius(img, left, right):
         """
         find the radius of curvature of the track
@@ -73,3 +38,38 @@ class Metrics:
         right_radius /= np.absolute(2 * right_fit_meter[0])
 
         return int(left_radius), int(right_radius)
+
+    @staticmethod
+    def get_distance_from_center(img, fit):
+        """
+        find the distance of the car from the center lane
+        get the car position -> center of the image
+        get lane width  -> difference of left fit and right fit
+        get center lane -> midpoint of left fit and right fit
+        get distance from center lane -> (car position - lane center) * (meter per pixel)
+        :param img: warped binary image with detected lane lines drawn
+        :param fit: lanes polynomial fit
+        :return: center_distance: car distance from center
+        """
+        # image dimensions
+        img_height, img_width = img.shape[0], img.shape[1]
+
+        # pixel to meter factor
+        x_meter_per_pixel = 3.7 / (img_height - 20)
+
+        # camera is mounted at the center of the car
+        car_position = img_width / 2
+
+        # left and right polynomial fits
+        right_fit, left_fit = fit
+
+        # lane width in which car is being driven
+        lane_width = abs(left_fit - right_fit)
+
+        # lane center is the midpoint at the bottom of the image
+        lane_center = (left_fit + right_fit) / 2
+
+        # how much car is away from lane center
+        center_distance = (car_position - lane_center) * x_meter_per_pixel
+
+        return center_distance[2], abs(lane_width[2])

@@ -93,8 +93,7 @@ class PreProcessing:
         """
         import cv2 as cv
         # load calibration params from pickle or else find the params
-        camera_matrix, dist_coef = PreProcessing.load_calibration_params() \
-            if load_params  else PreProcessing.get_calibration_params(nx, ny)
+        camera_matrix, dist_coef = PreProcessing.load_calibration_params()
         # undistorted image
         undistorted = cv.undistort(src=img,
                                    cameraMatrix=camera_matrix,
