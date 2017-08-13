@@ -41,7 +41,7 @@ It is assumed that the chessboard is fixed on the (x, y) plane at z=0, such that
 successful chessboard detection.
 
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
 | Method  | `PreProcessing.get_calibration_params()`      |
@@ -72,7 +72,7 @@ Pipeline
 
 #### 1. Distortion Correction:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
 | Method  | `PreProcessing.load_calibration_params()`      |
@@ -81,7 +81,7 @@ Pipeline
 
 The Algorithm for thresholding is as follows:
 
--   Load the claibration parameters i.e `Camera Matrix` and `Distortion Coefficient` from a pickle file.
+-   Load the calibration parameters i.e `Camera Matrix` and `Distortion Coefficient` from a pickle file.
 -	Apply calibration parameters on the source image to remove distortion using
     opencv `undistort`().
     
@@ -100,7 +100,7 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 
 #### 2. Color and Gradient Thresholding:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
 | Method  | `PreProcessing.get_binary_images()`      |
@@ -132,7 +132,7 @@ The Algorithm for thresholding is as follows:
 
 #### 3. Perspective Transform:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `perspective_transform.py`  |
 | Method  | `PerspectiveTransform.get_perspective_points()`      |
@@ -179,7 +179,7 @@ that the lines appear parallel in the warped image.
 #### 4. Lane Lines Detection using Histogram and Sliding Window Algorithm:
 
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `lanes_fitting.py`  |
 | Method  | `LanesFitting.get_lanes_fit()`      |
@@ -211,7 +211,7 @@ The Algorithm for updating the lane lines detected is as follows:
 
 #### 5. Radius of curvature and vehicle distance from center lane:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `metrics.py`  |
 | Method  | `Metrics.get_curvature_radius()`      |
@@ -233,9 +233,15 @@ Algorithm for finding vehicle distance from center lane is as follows:
 
 #### 6. Results:
 
-I implemented this step in lines \# through \# in my code in
-`yet_another_file.py` in the function `map_lane()`. Here is an example of my
-result on a test image:
+| Source Code Reference    |  |
+|-----------|-------------|
+| File  | `perspective_transform.py`  |
+| Method  | `PerspectiveTransform.unwrap()`      |
+
+Algorithm for translating back the found lane lines to the original image:
+
+
+Here are the examples:
 
 ![alt text](./documentation/pipeline-1.jpg)
 

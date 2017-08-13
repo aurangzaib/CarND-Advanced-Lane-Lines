@@ -153,7 +153,9 @@ class PerspectiveTransform:
         cv.fillPoly(color_warp, np.int_([pts]), (0, 255, 0))
 
         # Warp the blank back to original image space using inverse perspective matrix (Minv)
-        new_warp = cv.warpPerspective(color_warp, inv_transform_matrix, (img.shape[1], img.shape[0]))
+        new_warp = cv.warpPerspective(color_warp,
+                                      inv_transform_matrix,
+                                      (img.shape[1], img.shape[0]))
 
         # Combine the result with the original image
         result = cv.addWeighted(img, 1, new_warp, 0.3, 0)

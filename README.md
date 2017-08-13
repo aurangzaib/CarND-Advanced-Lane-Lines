@@ -12,7 +12,7 @@ The goals of the project are the following:
     
 -   Apply a distortion correction to raw images.
 
--   Use color and gradients transforms to create a thresholded binary image.
+-   Use color and gradients transforms to create a binary image.
 
 -   Apply a perspective transform to birds-eye view binary image.
 
@@ -41,7 +41,7 @@ It is assumed that the chessboard is fixed on the (x, y) plane at z=0, such that
 successful chessboard detection.
 
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
 | Method  | `PreProcessing.get_calibration_params()`      |
@@ -93,7 +93,7 @@ ret, camera_matrix, dist_coef, rot_vector, trans_vector = cv.calibrateCamera(obj
                                                                              imageSize=test_img.shape[0:2],
                                                                              cameraMatrix=None,
                                                                              distCoeffs=None)
-# store calibration params as pickle to avoid recalibration
+# store calibration params as pickle to avoid re-calibration
 PreProcessing.save_calibration_params(camera_matrix, dist_coef)
 ```
 
@@ -113,7 +113,7 @@ Pipeline
 
 #### 1. Distortion Correction:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
 | Method  | `PreProcessing.load_calibration_params()`      |
@@ -122,7 +122,7 @@ Pipeline
 
 The Algorithm for thresholding is as follows:
 
--   Load the claibration parameters i.e `Camera Matrix` and `Distortion Coefficient` from a pickle file.
+-   Load the calibration parameters i.e `Camera Matrix` and `Distortion Coefficient` from a pickle file.
 -	Apply calibration parameters on the source image to remove distortion using
     opencv `undistort`().
     
@@ -154,7 +154,7 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 
  
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
 | Method  | `PreProcessing.get_binary_images()`      |
@@ -202,7 +202,6 @@ s_binary[(s >= hls_thresh[0]) & (s <= hls_thresh[1])] = 1
 # resultant of r, s and sx
 binary_image = np.zeros_like(sx_binary)
 binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
-# Helper.save_binarized_image(img, binary_image)
 return binary_image
 ```
 
@@ -216,7 +215,7 @@ return binary_image
 
 #### 3. Perspective Transform:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `perspective_transform.py`  |
 | Method  | `PerspectiveTransform.get_perspective_points()`      |
@@ -288,7 +287,7 @@ that the lines appear parallel in the warped image.
 #### 4. Lane Lines Detection using Histogram and Sliding Window Algorithm:
 
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `lanes_fitting.py`  |
 | Method  | `LanesFitting.get_lanes_fit()`      |
@@ -411,7 +410,7 @@ right_fit = np.polyfit(righty, rightx, 2)
 
 #### 5. Radius of curvature and vehicle distance from center lane:
 
-| Sourcecode Reference    |  |
+| Source Code Reference    |  |
 |-----------|-------------|
 | File  | `metrics.py`  |
 | Method  | `Metrics.get_curvature_radius()`      |
@@ -455,7 +454,7 @@ Algorithm for finding vehicle distance from center lane is as follows:
 -	Get `lanes width` by taking difference of left and right polynomial fits.
 -	Get `lane center` using midpoint left and right polynomial fits.
 -	Get `distance from center` by taking difference of `car position` and `lane center`.
--	Get distance in meters by multplying `distance from center` with conversion factor.
+-	Get distance in meters by multiplying `distance from center` with conversion factor.
 
 ```python
 
@@ -481,15 +480,47 @@ center_distance = (car_position - lane_center) * x_meter_per_pixel
 
 #### 6. Results:
 
-I implemented this step in lines \# through \# in my code in
-`yet_another_file.py` in the function `map_lane()`. Here is an example of my
-result on a test image:
+| Source Code Reference    |  |
+|-----------|-------------|
+| File  | `perspective_transform.py`  |
+| Method  | `PerspectiveTransform.unwrap()`      |
+
+Algorithm for translating the found lane lines in warped image back to the original image:
+-	Create an image to draw line on.
+-	Recast `x` and `y` pixel points in usable format.
+-	Draw lanes on warped blank image.
+-	Warp back to original image using `inverse transform matrix`.
+
+```python
+ploty = np.linspace(0, transformed_image.shape[0] - 1, transformed_image.shape[0])
+left_fitx = left_fit[0] * ploty ** 2 + left_fit[1] * ploty + left_fit[2]
+right_fitx = right_fit[0] * ploty ** 2 + right_fit[1] * ploty + right_fit[2]
+
+# Create an image to draw the lines on
+warp_zero = np.zeros_like(transformed_image).astype(np.uint8)
+color_warp = np.dstack((warp_zero, warp_zero, warp_zero))
+
+# Recast the x and y points into usable format for cv2.fillPoly()
+pts_left = np.array([np.transpose(np.vstack([left_fitx, ploty]))])
+pts_right = np.array([np.flipud(np.transpose(np.vstack([right_fitx, ploty])))])
+pts = np.hstack((pts_left, pts_right))
+
+# Draw the lane onto the warped blank image
+cv.fillPoly(color_warp, np.int_([pts]), (0, 255, 0))
+
+# Warp the blank back to original image space using inverse perspective matrix (Minv)
+new_warp = cv.warpPerspective(color_warp,
+                              inv_transform_matrix,
+                              (img.shape[1], img.shape[0]))
+```
+Here are the examples:
 
 ![alt text](./documentation/pipeline-1.jpg)
 
 ![alt text](./documentation/pipeline-2.jpg)
 
 ![alt text](./documentation/pipeline-3.jpg)
+
 
 
 
