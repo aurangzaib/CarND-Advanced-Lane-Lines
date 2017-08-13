@@ -9,8 +9,8 @@ class LaneDetection:
     @staticmethod
     def pipeline(img, lanes_fit):
         # debug flag
-        is_debug_enabled = False
-        
+        is_debug_enabled = True
+
         # checkbox dimensions for calibration
         nx, ny, channels = 9, 6, 3
 

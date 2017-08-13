@@ -58,11 +58,14 @@ The algorithm is as follows:
     
 ``` python
 imgs = glob.glob("camera_cal/*.jpg")  # img_pts --> 2D coordinates in image
+
 # obj_pts --> 3D coordinates in real world
 img_pts, obj_pts, = [], []
+
 # to create a matrix of 4x5 --> np.mgrid[0:4, 0:5]
 obj_pt = np.zeros(shape=(nx * ny, channels), dtype=np.float32)
 obj_pt[:, :2] = np.mgrid[0:nx, 0:ny].T.reshape(-1, 2)
+
 # loop over all images and append the image and object points
 for file_name in imgs:
     # read the image
@@ -83,6 +86,7 @@ for file_name in imgs:
 
 # use an image to find camera matrix and distortion coef
 test_img = mpimg.imread("camera_cal/calibration4.jpg")
+
 # find camera matrix and distortion coef
 ret, camera_matrix, dist_coef, rot_vector, trans_vector = cv.calibrateCamera(objectPoints=obj_pts,
                                                                              imagePoints=img_pts,
@@ -125,6 +129,7 @@ The Algorithm for thresholding is as follows:
 ```python
 # load calibration params from pickle or else find the params
 camera_matrix, dist_coef = PreProcessing.load_calibration_params()
+
 # undistorted image
 undistorted = cv.undistort(src=img,
                            cameraMatrix=camera_matrix,
@@ -151,7 +156,8 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 | Sourcecode Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
-| Method  | `PreProcessing.get_binary_images()`      |
+| Method  | `PreProcessing.get_binary_images()`|
+
 
 The Algorithm for thresholding is as follows:
 
@@ -474,14 +480,16 @@ I implemented this step in lines \# through \# in my code in
 `yet_another_file.py` in the function `map_lane()`. Here is an example of my
 result on a test image:
 
-![alt text](./examples/example_output.jpg)
+![alt text](./documentation/pipeline-1.jpg)
+![alt text](./documentation/pipeline-2.jpg)
+![alt text](./documentation/pipeline-3.jpg)
 
-### Pipeline (video)
 
-#### 1. Provide a link to your final video output. Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
 
+Here is the video the complete pipeline:
+
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/N2Xmli0xVmA/0.jpg)](http://www.youtube.com/watch?v=N2Xmli0xVmA)
 ### Discussion
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project. Where will your pipeline likely fail? What could you do to make it more robust?

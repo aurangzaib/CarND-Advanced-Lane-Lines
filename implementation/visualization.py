@@ -108,24 +108,36 @@ class Visualization:
         :param lane_width: width of the lane
         :return: None
         """
+        from helper import Helper
         import cv2 as cv
 
         # debugging parameters
-        print("left radius: {}, right radius: {}".format(radius[0], radius[1]))
-        print("distance from center: {}".format(center_distance))
-        print("lane width: {}".format(lane_width))
-        print("\n")
+        # print("left radius: {}, right radius: {}".format(radius[0], radius[1]))
+        # print("distance from center: {}".format(center_distance))
+        # print("lane width: {}".format(lane_width))
+        # print("\n")
 
         # resize the image for better visualization
         resultant = cv.resize(resultant, None, fx=0.5, fy=0.5, interpolation=cv.INTER_LINEAR)
         resultant = cv.cvtColor(resultant, cv.COLOR_BGR2RGB)
 
+        # FONT_HERSHEY_SIMPLEX
+        font = cv.QT_FONT_NORMAL
+
+        radius_txt = "Radius of Curvature = {}m".format(str(round(radius[0], 3)))
+        left_or_right = "left" if center_distance > 0 else "right"
+        distance_txt = "Vehicle is {}m {} of center ".format(str(round(abs(center_distance), 2)), left_or_right)
+
+        cv.putText(resultant, radius_txt, (10, 30), font, 0.6, (255, 255, 255), 1, cv.LINE_AA)
+        cv.putText(resultant, distance_txt, (10, 60), font, 0.6, (255, 255, 255), 1, cv.LINE_AA)
+
         # resize the image for better visualization
         img_dst = cv.resize(img_dst, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
         lane_lines = cv.resize(lane_lines, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
 
+        Helper.save_pipeline_resultant(resultant)
         # show the images with 1 ms delay
-        cv.imshow("warped detected lines", lane_lines)
-        cv.imshow("warped lines", img_dst)
-        cv.imshow("result", resultant)
+        # cv.imshow("warped detected lines", lane_lines)
+        # cv.imshow("warped lines", img_dst)
+        # cv.imshow("result", resultant)
         cv.waitKey(1)

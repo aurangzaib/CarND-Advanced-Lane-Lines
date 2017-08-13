@@ -4,6 +4,10 @@ from pre_processing import PreProcessing
 class Helper:
     @staticmethod
     def save_undistorted_sample_images():
+        """
+        to be used in:
+        pre_processing.get_undistorted_image
+        """
         import matplotlib.image as mpimg
         import cv2 as cv
         import glob
@@ -30,6 +34,10 @@ class Helper:
 
     @staticmethod
     def save_undistorted_sample_video():
+        """
+        to be used in:
+        pre_processing.get_undistorted_image
+        """
         import matplotlib.image as mpimg
         import cv2 as cv
         import imageio
@@ -77,16 +85,16 @@ class Helper:
             mpimg.imsave("../buffer/warped-" + str(t) + ".jpg", img_dst, cmap="gray")
 
     @staticmethod
-    def save_first_lane_fit_images(lanes_img):
+    def save_first_lane_fit_images(img):
         """
         to be used in:
         LanesFitting.get_lanes_fit
         """
         import matplotlib.image as mpimg
-        mpimg.imsave("../buffer/lane-fit-"".jpg", lanes_img, cmap="gray")
+        mpimg.imsave("../buffer/lane-fit-"".jpg", img, cmap="gray")
 
     @staticmethod
-    def save_lane_fit_images(lanes_img):
+    def save_lane_fit_images(img):
         """
         to be used in:
         LanesFitting.update_lanes_fit
@@ -97,4 +105,44 @@ class Helper:
         print("seconds:", seconds)
         if seconds % 10 == 0:
             t = int(time.time())
-            mpimg.imsave("../buffer/lane-fit-updated-" + str(t) + ".jpg", lanes_img, cmap="gray")
+            mpimg.imsave("../buffer/lane-fit-updated-" + str(t) + ".jpg", img, cmap="gray")
+
+    @staticmethod
+    def save_pipeline_resultant(img):
+        """
+        to be used in:
+        Visualization.visualize_pipeline
+        """
+        import matplotlib.image as mpimg
+        import cv2 as cv
+        import time
+        seconds = int(time.time() % 60)
+
+        t = int(time.time())
+        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+        mpimg.imsave("../pipeline/" + str(t) + ".jpg", img)
+
+    @staticmethod
+    def img2video():
+        def img2video():
+            import cv2
+
+            img = cv2.imread('pipeline/1502629665.jpg')
+            dimensions = img.shape[1], img.shape[0]
+            # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
+            out = cv2.VideoWriter('pipeline.avi',
+                                  cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),
+                                  10,
+                                  dimensions)
+
+            import glob
+
+            imgs = glob.glob("pipeline/*.jpg")
+
+            for filename in imgs:
+                frame = cv2.imread(filename)
+                out.write(frame)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+
+            out.release()

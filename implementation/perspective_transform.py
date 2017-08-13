@@ -33,9 +33,6 @@ class PerspectiveTransform:
             [img_height - offset, img_width]
         ])
 
-        print("source points: {}".format(src))
-        print("destination points: {}".format(dst))
-
         return src, dst
 
     @staticmethod
