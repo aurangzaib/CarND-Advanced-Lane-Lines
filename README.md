@@ -153,10 +153,12 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 #### 2. Color and Gradient Thresholding:
 
  
+
 | Sourcecode Reference    |  |
 |-----------|-------------|
 | File  | `pre_processing.py`  |
-| Method  | `PreProcessing.get_binary_images()`|
+| Method  | `PreProcessing.get_binary_images()`      |
+
 
 
 The Algorithm for thresholding is as follows:
@@ -474,7 +476,7 @@ lane_center = (left_fit + right_fit) / 2
 center_distance = (car_position - lane_center) * x_meter_per_pixel
 ```
 
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
+#### 6. Results:
 
 I implemented this step in lines \# through \# in my code in
 `yet_another_file.py` in the function `map_lane()`. Here is an example of my
@@ -487,7 +489,7 @@ result on a test image:
 
 
 
-Here is the video the complete pipeline:
+Here is the video of the complete pipeline:
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/N2Xmli0xVmA/0.jpg)](http://www.youtube.com/watch?v=N2Xmli0xVmA)
 ### Discussion
