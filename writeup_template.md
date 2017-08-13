@@ -108,13 +108,10 @@ The algorithm is as follows:
 
 The result of the Camera Calibration and Distortion Removal:
 
-Original Images
 
-![alt text](./documentation/undistorted-original.jpg)
+![alt text](./documentation/undistorted-chessboard-1.jpg)
 
-Undistorted Images
-
-![alt text](./documentation/undistorted.jpg)
+![alt text](./documentation/undistorted-chessboard-2.jpg)
 
 
 
@@ -147,7 +144,6 @@ to one of the test images like this one:
 |-------------|
 |File: `pre_processing.py`|
 |Method: `PreProcessing.get_binary_images()`|
-
 
 
 
