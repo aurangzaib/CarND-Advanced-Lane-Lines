@@ -110,13 +110,12 @@ The result of the Camera Calibration and Distortion Removal:
 
 Original Images
 
-![alt text](./documentation/calibration2.jpg) 
-![alt text](./documentation/calibration12.jpg)
+![alt text](./documentation/distorted.jpg)
+
 
 Undistorted Images
 
-![alt text](./documentation/calibration2-undistorted.jpg)
-![alt text](./documentation/calibration12-undistorted.jpg)
+![alt text](./documentation/undistorted.jpg)
 
 ### Pipeline (single images)
 
@@ -125,11 +124,9 @@ Undistorted Images
 To demonstrate this step, I will describe how I apply the distortion correction
 to one of the test images like this one:
 
-![alt text](./documentation/original-1100.jpg)
-![alt text](./documentation/original-1000.jpg)
+![alt text](./documentation/distorted-2.jpg)
 
-![alt text](./documentation/undistorted-1100.jpg)
-![alt text](./documentation/undistorted-1000.jpg)
+![alt text](./documentation/undistorted-2.jpg)
 
 #### 2. Color and Gradient Thresholding:
 
