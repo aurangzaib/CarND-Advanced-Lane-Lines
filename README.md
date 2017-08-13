@@ -205,6 +205,8 @@ binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
 return binary_image
 ```
 
+Right side: `Original Image`. Left side: `Binary Image`
+
 ![alt text](./documentation/binary-1.jpg)
 
 ![alt text](./documentation/binary-2.jpg)
@@ -276,7 +278,8 @@ I verified that my perspective transform was working as expected by drawing the
 `src` and `dst` points onto a test image and its warped counterpart to verify
 that the lines appear parallel in the warped image.
 
- 
+ Right side: `Original Image`. Left side: `Warped Image`
+
 ![alt text](./documentation/warped-1.jpg)
 
 ![alt text](./documentation/warped-2.jpg)

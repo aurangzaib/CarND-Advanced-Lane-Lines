@@ -119,7 +119,7 @@ The Algorithm for thresholding is as follows:
     binary R channel.
 
 
-
+Right side: `Original Image`. Left side: `Binary Image`
 
 ![alt text](./documentation/binary-1.jpg)
 
@@ -167,6 +167,7 @@ I verified that my perspective transform was working as expected by drawing the
 `src` and `dst` points onto a test image and its warped counterpart to verify
 that the lines appear parallel in the warped image.
 
+Right side: `Original Image`. Left side: `Warped Image`
  
 ![alt text](./documentation/warped-1.jpg)
 
@@ -204,7 +205,6 @@ The Algorithm for updating the lane lines detected is as follows:
 -	Get left and right pixel positions from nonzero pixels.
 -	Apply 2nd order polynomial to the left and right pixel positions.
 
-
 ![alt text](./documentation/lane-fit-original.jpg)
 
 ![alt text](./documentation/lane-fit-updated.jpg)
@@ -239,7 +239,6 @@ Algorithm for finding vehicle distance from center lane is as follows:
 | Method  | `PerspectiveTransform.unwrap()`      |
 
 Algorithm for translating back the found lane lines to the original image:
-
 
 Here are the examples:
 
