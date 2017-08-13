@@ -59,7 +59,7 @@ The algorithm is as follows:
 -   Apply calibration parameters on the source image to remove distortion using
     opencv `undistort`().
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ python
+``` python
         imgs = glob.glob("camera_cal/*.jpg")
         # img_pts --> 2D coordinates in image
         # obj_pts --> 3D coordinates in real world
@@ -99,7 +99,7 @@ The algorithm is as follows:
                                    distCoeffs=dist_coef,
                                    dst=None,
                                    newCameraMatrix=camera_matrix)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
 The code for this step is contained in the PreProcessing.get_calibration_params
 and PreProcessing.get_undistorted_image methods in
@@ -150,7 +150,7 @@ The Algorithm for thresholding is as follows:
 The code for this step is contained in the PreProcessing.get_binary_image in
 implementation/pre_processing.py
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ python
+``` python
 # grayscale
 gray = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
 gray_binary = np.zeros_like(gray)
@@ -180,7 +180,7 @@ binary_image = np.zeros_like(sx_binary)
 binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
 # Helper.save_binarized_image(img, binary_image)
 return binary_image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
 ![alt text](./documentation/binary-original-1502536952.jpg)
 
@@ -209,7 +209,7 @@ return binary_image
 
 Here is the implementation snippet:
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ python
+``` python
 # y tilt --> img_height / 2 + offset
 # x tilt --> spacing between both lanes
 x_tilt, y_tilt = 55, 450
@@ -230,8 +230,8 @@ dst = np.float32([
     [offset, 0],
     [img_height - offset, 0],
     [img_height - offset, img_width]
-]) 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+])
+```
 
  
 
