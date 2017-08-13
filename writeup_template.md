@@ -56,10 +56,10 @@ The algorithm is as follows:
 
 -   Save the calibration parameters as a `pickle` file for reuse later.
 
--   Apply calibration parameters on the source image to remove distortion using opencv `undistort`().
+-   Apply calibration parameters on the source image to remove distortion using
+    opencv `undistort`().
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ python
-
         imgs = glob.glob("camera_cal/*.jpg")
         # img_pts --> 2D coordinates in image
         # obj_pts --> 3D coordinates in real world
@@ -99,8 +99,7 @@ The algorithm is as follows:
                                    distCoeffs=dist_coef,
                                    dst=None,
                                    newCameraMatrix=camera_matrix)
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The code for this step is contained in the PreProcessing.get_calibration_params
 and PreProcessing.get_undistorted_image methods in
@@ -110,8 +109,7 @@ The result of the Camera Calibration and Distortion Removal:
 
 Original Images
 
-![alt text](./documentation/distorted.jpg)
-
+![alt text](./documentation/undistorted-original.jpg)
 
 Undistorted Images
 
@@ -124,16 +122,30 @@ Undistorted Images
 To demonstrate this step, I will describe how I apply the distortion correction
 to one of the test images like this one:
 
-![alt text](./documentation/distorted-2.jpg)
+![alt text](./documentation/undistorted-original-2.jpg)
 
 ![alt text](./documentation/undistorted-2.jpg)
 
 #### 2. Color and Gradient Thresholding:
 
-The Algorithm for thresholding is as follows: Apply grayscale Apply Sobel X.
-Find the 8bit Sobel and binary Sobel. Get binary R channel from RGB Get binary S
-channel from HLS Resultant is the merger of binary Sobel and binary S channel
-AND'd with binary R channel.
+ 
+
+The Algorithm for thresholding is as follows:
+
+-   Apply grayscale Apply Sobel X using opencv `Sobel` method.
+
+-   Find the 8bit Sobel and binary Sobel using `np.uint8(255 * sx_abs /
+    np.max(sx_abs))`.
+
+-   Get binary R channel from RGB using
+    `r_binary[(r>=rgb_thresh[0])&(r<=rgb_thresh[1])]=1`.
+
+-   Get binary S channel from HLS.
+
+-   Resultant is the merger of binary Sobel and binary S channel AND'd with
+    binary R channel.
+
+ 
 
 The code for this step is contained in the PreProcessing.get_binary_image in
 implementation/pre_processing.py
@@ -171,55 +183,93 @@ return binary_image
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ![alt text](./documentation/binary-original-1502536952.jpg)
+
 ![alt text](./documentation/binary-1502536952.jpg)
+
+ 
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`,
-which appears in lines 1 through 8 in the file `example.py`
-(output_images/examples/example.py) (or, for example, in the 3rd code cell of
-the IPython notebook). The `warper()` function takes as inputs an image (`img`),
-as well as source (`src`) and destination (`dst`) points. I chose the hardcode
-the source and destination points in the following manner:
+ 
+
+-   The implementation method to get the perspective transform `src` and `dst`
+    points is `PerspectiveTransform.get_perspective_points `in file
+    `perspective_transform.py. `The method takes as input `input_image` and
+    optional `offset` values.
+
+-   The implementation method to get the warped image using `src` and `dst`
+    points is `PerspectiveTransform.get_wrapped_image `in file
+    `perspective_transform.py`. The method takes as input `input_image`,
+    `source` and `destination` points and returns `warped` image.
+
+-   The values I chose for `src` and `dst` points is such that it covers the
+    Lane Trapezoid in both original and warped images.
+
+ 
+
+Here is the implementation snippet:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+# y tilt --> img_height / 2 + offset
+# x tilt --> spacing between both lanes
+x_tilt, y_tilt = 55, 450
+img_height, img_width = img.shape[0], img.shape[1]
+img_center = (img_width / 2)
+
+# covers the lane in the road
+src = np.float32([
+    [offset, img_height],
+    [img_center - x_tilt, y_tilt],
+    [img_center + x_tilt, y_tilt],
+    [img_width - offset, img_height]
+])
+
+# forms a bird eye
+dst = np.float32([
+    [offset, img_width],
+    [offset, 0],
+    [img_height - offset, 0],
+    [img_height - offset, img_width]
+]) 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
 
 This resulted in the following source and destination points:
 
 | Source    | Destination |
 |-----------|-------------|
-| 585, 460  | 320, 0      |
-| 203, 720  | 320, 720    |
-| 1127, 720 | 960, 720    |
-| 695, 460  | 960, 0      |
+| 100, 720  | 100, 1280   |
+| 585, 450  | 100, 0      |
+| 695, 450  | 620, 0      |
+| 1180, 720 | 620, 1280   |
+
+ 
 
 I verified that my perspective transform was working as expected by drawing the
 `src` and `dst` points onto a test image and its warped counterpart to verify
 that the lines appear parallel in the warped image.
 
-![alt text](./examples/warped_straight_lines.jpg)
+ 
+
+![alt text](./documentation/warped-1.jpg)
+
+![alt text](./documentation/warped-2.jpg)
+
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
 Then I did some other stuff and fit my lane lines with a 2nd order polynomial
 kinda like this:
 
-![alt text](./examples/color_fit_lines.jpg)
+
+![alt text](./documentation/lane-fit-original.jpg)
+
+![alt text](./documentation/lane-fit-updated.jpg)
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines \# through \# in my code in `my_other_file.py`
+I did this in lines \# through \# in my code in `my_other_file.py` 
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 

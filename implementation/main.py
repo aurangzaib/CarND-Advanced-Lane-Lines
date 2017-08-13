@@ -4,7 +4,7 @@ def __main__():
     sys.path.append("implementation/")
     from lane_detection import LaneDetection
 
-    path = "../harder_challenge_video.mp4"
+    path = "../project_video.mp4"
     video_cap = imageio.get_reader(path)
     # polynomial lane fit
     lanes_fit = []

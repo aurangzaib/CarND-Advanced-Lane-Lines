@@ -105,6 +105,7 @@ class LanesFitting:
          Using the previously calculated Lanes Fit to avoid blind search
          Searching in a margin around previous Lanes position
          """
+        from helper import Helper
         import numpy as np
 
         left_fit, right_fit = fit
@@ -144,4 +145,5 @@ class LanesFitting:
         lanes_img = np.dstack((img, img, img)) * 255
         lanes_img = Visualization.visualize_updated_lanes_fit(img, lanes_img, nonzero, indices, fit)
 
+        Helper.save_lane_fit_images(lanes_img)
         return lanes_img, fit, left_xy, right_xy

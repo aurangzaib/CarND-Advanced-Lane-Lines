@@ -42,6 +42,6 @@ class LaneDetection:
         resultant = PerspectiveTransform.get_unwrapped_image(undistorted_image, warped_image, src, dst, lanes_fit)
 
         # visualize the pipeline
-        Visualization.visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width)
+        # Visualization.visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width)
 
         return lanes_fit

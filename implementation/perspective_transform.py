@@ -33,6 +33,9 @@ class PerspectiveTransform:
             [img_height - offset, img_width]
         ])
 
+        print("source points: {}".format(src))
+        print("destination points: {}".format(dst))
+
         return src, dst
 
     @staticmethod
@@ -83,7 +86,7 @@ class PerspectiveTransform:
         import cv2 as cv
         # get the transform matrix
         transform_matrix = cv.getPerspectiveTransform(src, dst)
-        # apply perspective tranform
+        # apply perspective transform
         transformed_image = PerspectiveTransform.wrap(img, transform_matrix)
         return transformed_image
 
