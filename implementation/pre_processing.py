@@ -115,7 +115,6 @@ class PreProcessing:
         :param hls_thresh: threshold range for s channel in HLS
         :return: binary image
         """
-        from helper import Helper
         import numpy as np
         import cv2 as cv
 
@@ -147,5 +146,4 @@ class PreProcessing:
         binary_image = np.zeros_like(sx_binary)
         binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
 
-        Helper.save_binarized_image(img, binary_image)
         return binary_image

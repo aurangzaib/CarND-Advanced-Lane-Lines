@@ -135,7 +135,7 @@ class Visualization:
         img_dst = cv.resize(img_dst, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
         lane_lines = cv.resize(lane_lines, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
 
-        Helper.save_pipeline_resultant(resultant)
+        # Helper.save_pipeline_resultant(resultant)
         # show the images with 1 ms delay
         # cv.imshow("warped detected lines", lane_lines)
         # cv.imshow("warped lines", img_dst)

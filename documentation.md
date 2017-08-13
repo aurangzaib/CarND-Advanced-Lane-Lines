@@ -98,7 +98,6 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 ![alt text](./documentation/undistorted-3.jpg)
 
 
-
 #### 2. Color and Gradient Thresholding:
 
 | Sourcecode Reference    |  |
@@ -125,6 +124,9 @@ The Algorithm for thresholding is as follows:
 ![alt text](./documentation/binary-1.jpg)
 
 ![alt text](./documentation/binary-2.jpg)
+
+![alt text](./documentation/binary-3.jpg)
+
 
  
 
@@ -168,8 +170,10 @@ that the lines appear parallel in the warped image.
  
 ![alt text](./documentation/warped-1.jpg)
 
-
 ![alt text](./documentation/warped-2.jpg)
+
+![alt text](./documentation/warped-3.jpg)
+
 
 
 #### 4. Lane Lines Detection using Histogram and Sliding Window Algorithm:
@@ -195,7 +199,7 @@ The Algorithm for detecting lane lines is as follows:
 
 
 The Algorithm for updating the lane lines detected is as follows:
--	Since we have already found lane lines in the previous step, we don't need to blindly search each time, instead we can use the information of previously found lines fits and search in the region around them.
+-	Since we have already found lane lines in the previous step, we don't need to perform blind search each time, instead we can use the information of previously found lines fits and search in the region around them.
 -	Get left and right indices for nonzero pixels.
 -	Get left and right pixel positions from nonzero pixels.
 -	Apply 2nd order polynomial to the left and right pixel positions.
@@ -234,7 +238,9 @@ I implemented this step in lines \# through \# in my code in
 result on a test image:
 
 ![alt text](./documentation/pipeline-1.jpg)
+
 ![alt text](./documentation/pipeline-2.jpg)
+
 ![alt text](./documentation/pipeline-3.jpg)
 
 

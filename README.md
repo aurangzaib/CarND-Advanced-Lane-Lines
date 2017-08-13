@@ -210,6 +210,8 @@ return binary_image
 
 ![alt text](./documentation/binary-2.jpg)
 
+![alt text](./documentation/binary-3.jpg)
+
  
 
 #### 3. Perspective Transform:
@@ -278,8 +280,9 @@ that the lines appear parallel in the warped image.
  
 ![alt text](./documentation/warped-1.jpg)
 
-
 ![alt text](./documentation/warped-2.jpg)
+
+![alt text](./documentation/warped-3.jpg)
 
 
 #### 4. Lane Lines Detection using Histogram and Sliding Window Algorithm:
@@ -483,7 +486,9 @@ I implemented this step in lines \# through \# in my code in
 result on a test image:
 
 ![alt text](./documentation/pipeline-1.jpg)
+
 ![alt text](./documentation/pipeline-2.jpg)
+
 ![alt text](./documentation/pipeline-3.jpg)
 
 
