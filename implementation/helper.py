@@ -50,7 +50,8 @@ class Helper:
     @staticmethod
     def save_binarized_image(img, binary_image):
         """
-        to be used in PerspectiveTransform.get_sample_wrapped_images
+        to be used in:
+        PreProcessing.get_binary_image
         """
         import matplotlib.image as mpimg
         import time
@@ -63,7 +64,8 @@ class Helper:
     @staticmethod
     def save_original_and_warped_images(img_src, img_dst):
         """
-        to be used in PerspectiveTransform.get_sample_wrapped_images
+        to be used in:
+        PerspectiveTransform.get_sample_wrapped_images
         """
         import matplotlib.image as mpimg
         import time
@@ -77,7 +79,8 @@ class Helper:
     @staticmethod
     def save_first_lane_fit_images(lanes_img):
         """
-        to be used in LanesFitting.get_lanes_fit
+        to be used in:
+        LanesFitting.get_lanes_fit
         """
         import matplotlib.image as mpimg
         mpimg.imsave("../buffer/lane-fit-"".jpg", lanes_img, cmap="gray")
@@ -85,7 +88,8 @@ class Helper:
     @staticmethod
     def save_lane_fit_images(lanes_img):
         """
-        to be used in LanesFitting.update_lanes_fit
+        to be used in:
+        LanesFitting.update_lanes_fit
         """
         import matplotlib.image as mpimg
         import time

@@ -8,6 +8,9 @@ from metrics import Metrics
 class LaneDetection:
     @staticmethod
     def pipeline(img, lanes_fit):
+        # debug flag
+        is_debug_enabled = False
+        
         # checkbox dimensions for calibration
         nx, ny, channels = 9, 6, 3
 
@@ -42,6 +45,7 @@ class LaneDetection:
         resultant = PerspectiveTransform.get_unwrapped_image(undistorted_image, warped_image, src, dst, lanes_fit)
 
         # visualize the pipeline
-        # Visualization.visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width)
+        if is_debug_enabled is True:
+            Visualization.visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width)
 
         return lanes_fit

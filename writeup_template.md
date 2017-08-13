@@ -42,7 +42,12 @@ all chessboard corners in a test image. `imgpoints` will be appended with the
 (x, y) pixel position of each of the corners in the image plane with each
 successful chessboard detection.
 
- 
+| The code for this step is contained in the following:| 
+|-------------|
+|File: `pre_processing.py`|
+|Method: `PreProcessing.get_calibration_params()`| 
+|Method: `PreProcessing.get_undistorted_image()`|
+
 
 The algorithm is as follows:
 
@@ -101,10 +106,6 @@ The algorithm is as follows:
                                    newCameraMatrix=camera_matrix)
 ```
 
-The code for this step is contained in the PreProcessing.get_calibration_params
-and PreProcessing.get_undistorted_image methods in
-`implementation/pre_processing.py`
-
 The result of the Camera Calibration and Distortion Removal:
 
 Original Images
@@ -115,20 +116,40 @@ Undistorted Images
 
 ![alt text](./documentation/undistorted.jpg)
 
-### Pipeline (single images)
 
-#### 1. Provide an example of a distortion-corrected image.
+
+Pipeline
+------------------
+
+#### 1. Distortion Correction:
+
+| The code for this step is contained in the following:| 
+|-------------|
+|File: `pre_processing.py`|
+|Method: `PreProcessing.get_calibration_params()`|
+|Method: `PreProcessing.get_undistorted_image()`|
 
 To demonstrate this step, I will describe how I apply the distortion correction
 to one of the test images like this one:
 
-![alt text](./documentation/undistorted-original-2.jpg)
+![alt text](./documentation/undistorted-1.jpg)
 
 ![alt text](./documentation/undistorted-2.jpg)
+
+![alt text](./documentation/undistorted-3.jpg)
+
+
 
 #### 2. Color and Gradient Thresholding:
 
  
+| The code for this step is contained in the following:| 
+|-------------|
+|File: `pre_processing.py`|
+|Method: `PreProcessing.get_binary_images()`|
+
+
+
 
 The Algorithm for thresholding is as follows:
 
@@ -145,10 +166,7 @@ The Algorithm for thresholding is as follows:
 -   Resultant is the merger of binary Sobel and binary S channel AND'd with
     binary R channel.
 
- 
 
-The code for this step is contained in the PreProcessing.get_binary_image in
-implementation/pre_processing.py
 
 ``` python
 # grayscale
@@ -182,24 +200,28 @@ binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
 return binary_image
 ```
 
-![alt text](./documentation/binary-original-1502536952.jpg)
+![alt text](./documentation/binary-1.jpg)
 
-![alt text](./documentation/binary-1502536952.jpg)
-
- 
-
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
+![alt text](./documentation/binary-2.jpg)
 
  
+
+#### 3. Perspective Transform:
+
+| The code for this step is contained in the following:| 
+|-------------|
+|File: `perspective_transform.py`|
+|Method: `PerspectiveTransform.get_perspective_points()`|
+|Method: `PerspectiveTransform.get_wrapped_image()`|
+
+
 
 -   The implementation method to get the perspective transform `src` and `dst`
-    points is `PerspectiveTransform.get_perspective_points `in file
-    `perspective_transform.py. `The method takes as input `input_image` and
+    points is `get_perspective_points() `. This method takes as input `input_image` and
     optional `offset` values.
 
 -   The implementation method to get the warped image using `src` and `dst`
-    points is `PerspectiveTransform.get_wrapped_image `in file
-    `perspective_transform.py`. The method takes as input `input_image`,
+    points is `get_wrapped_image() `. The method takes as input `input_image`,
     `source` and `destination` points and returns `warped` image.
 
 -   The values I chose for `src` and `dst` points is such that it covers the
@@ -251,8 +273,8 @@ I verified that my perspective transform was working as expected by drawing the
 that the lines appear parallel in the warped image.
 
  
-
 ![alt text](./documentation/warped-1.jpg)
+
 
 ![alt text](./documentation/warped-2.jpg)
 

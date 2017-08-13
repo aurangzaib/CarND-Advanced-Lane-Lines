@@ -147,5 +147,6 @@ class PreProcessing:
         # resultant of r, s and sx
         binary_image = np.zeros_like(sx_binary)
         binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
-        # Helper.save_binarized_image(img, binary_image)
+
+        Helper.save_binarized_image(img, binary_image)
         return binary_image
