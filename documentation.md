@@ -68,7 +68,7 @@ Right side: `Original Image`. Left side: `Undistorted Image`
 
 ![alt text](./documentation/undistorted-chessboard-2.jpg)
 
-<br/>
+
 Pipeline
 ------------------
 
@@ -266,7 +266,7 @@ Here is the video of the complete pipeline:
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/N2Xmli0xVmA/0.jpg)](http://www.youtube.com/watch?v=N2Xmli0xVmA)
 
-<br/>
+
 Discussion
 ------------------
 

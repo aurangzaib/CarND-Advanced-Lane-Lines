@@ -116,7 +116,6 @@ Right side: `Original Image`. Left side: `Undistorted Image`
 Pipeline
 ------------------
 
-
 #### 1. Distortion Correction:
 
 | Source Code Reference    |  |
