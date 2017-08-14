@@ -6,7 +6,7 @@
 |Note    | |
 |:-----------|:-------------|
 | **Source Code**  | For complete implementation of the project:  https://github.com/aurangzaib/CarND-Advanced-Lane-Lines  |
-| **How To Run**  | `python implementation/main.py`      |
+| **How To Run**  | `cd implementation && python main.py`      |
 
 
 
