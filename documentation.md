@@ -3,7 +3,11 @@
 **Advanced Lane Finding Project**
 =================================
 
- 
+| Note    | |
+|-----------|-------------|
+| **Source Code**  | For complete implementation of the project:  https://github.com/aurangzaib/CarND-Advanced-Lane-Lines  |
+| **How To Run**  | `python implementation/main.py`      |
+
 
 
 The goals of the project are the following:
@@ -25,7 +29,6 @@ The goals of the project are the following:
 
 -   Visualize the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
- 
 
 Camera Calibration
 ------------------
@@ -65,8 +68,7 @@ Right side: `Original Image`. Left side: `Undistorted Image`
 
 ![alt text](./documentation/undistorted-chessboard-2.jpg)
 
-
-
+<br/>
 Pipeline
 ------------------
 
@@ -264,7 +266,7 @@ Here is the video of the complete pipeline:
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/N2Xmli0xVmA/0.jpg)](http://www.youtube.com/watch?v=N2Xmli0xVmA)
 
-
+<br/>
 Discussion
 ------------------
 

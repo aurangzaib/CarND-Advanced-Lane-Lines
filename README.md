@@ -3,6 +3,10 @@
 **Advanced Lane Finding Project**
 =================================
 
+| Note    | |
+|-----------|-------------|
+| **Source Code**  | For complete implementation of the project:  https://github.com/aurangzaib/CarND-Advanced-Lane-Lines  |
+| **How To Run**  | `python implementation/main.py`      |
  
 
 The goals of the project are the following:
@@ -174,7 +178,7 @@ The Algorithm for thresholding is as follows:
 -   Resultant is the merger of binary Sobel and binary `S channel` AND'd with
     binary `R channel`.
 
-| Threshold    |Low   |High   | Smoothing Kernel   |
+| Threshold For   |Low   |High   | Smoothing Kernel   |
 |-----------|-------------|-------------|-------------|
 | Sobel X  | 20    | 200    | 9    |
 | R channel   | 170    | 255    | -    |
@@ -537,10 +541,17 @@ Here are the examples:
 Here is the video of the complete pipeline:
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/N2Xmli0xVmA/0.jpg)](http://www.youtube.com/watch?v=N2Xmli0xVmA)
-### Discussion
 
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project. Where will your pipeline likely fail? What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked
-and why, where the pipeline might fail and how I might improve it if I were
-going to pursue this project further.
+Discussion
+------------------
+
+##### Possible Improvements:
+-	Using data from left fit only if right fit is deviating significantly and vice verse.
+-	Dynanmic thresholding for binarization.
+-	Deep learning approach can be used along with current implementation to reduce the dependency on perspective transform and window sliding algorithm.
+
+##### Potential failure points for current pipeline:
+-	Varying light conditions and trees shadow.
+-	Pipeline will most definitely fail in snow conditions.
+-	Lane lines are obstructed by another vehicle in front.
