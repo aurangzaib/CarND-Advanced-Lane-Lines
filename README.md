@@ -7,18 +7,18 @@
 
 The goals of the project are the following:
 
--   Compute the camera calibration matrix and distortion coefficients given a
+-   Compute the `camera matrix` and distortion coefficients given a
     set of chessboard images.
     
--   Apply a distortion correction to raw images.
+-   Apply a `distortion correction` to raw images.
 
--   Use color and gradients transforms to create a binary image.
+-   Use `color` and `gradients transforms` to create a binary image.
 
--   Apply a perspective transform to birds-eye view binary image.
+-   Apply a `perspective transform` to birds-eye view of the binary image.
 
--   Detect lane pixels and fit to find the lane boundary.
+-   Detect `lane pixels` and fit to find the lane boundary.
 
--   Determine the curvature of the lane and vehicle position with respect to
+-   Determine the `radius of curvature` of the lane and `vehicle position` with respect to
     center.
     
 -   Warp the detected lane boundaries back onto the original image.
@@ -33,17 +33,19 @@ Camera Calibration
 
  
 
-I started by preparing "object points", which will be the (x, y, z) coordinates of
+Starting point is the preparation of "object points", which will be the (x, y, z) coordinates of
 the chessboard corners in the world. 
 
-It is assumed that the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image. Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image. `imgpoints` will be appended with the
+##### Assumption: The chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image. 
+
+Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image. `imgpoints` will be appended with the
 (x, y) pixel position of each of the corners in the image plane with each
 successful chessboard detection.
 
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `pre_processing.py`  |
+| File  | `implementation/pre_processing.py`  |
 | Method  | `PreProcessing.get_calibration_params()`      |
 
 
@@ -52,10 +54,10 @@ The algorithm is as follows:
 -   Read the source image.
 -   Find the `corners` of the image using opencv `findChessboardCorners`() and
     append the `corners` in the image points.
--   Find the calibration matrix and distortion coefficients using opencv
+-   Find the `camera matrix` and `distortion coefficients` using opencv
     `calibrateCamera`().
 -   Save the calibration parameters as a `pickle` file for reuse later.
-    
+
 ``` python
 imgs = glob.glob("camera_cal/*.jpg")  # img_pts --> 2D coordinates in image
 
@@ -97,7 +99,7 @@ ret, camera_matrix, dist_coef, rot_vector, trans_vector = cv.calibrateCamera(obj
 PreProcessing.save_calibration_params(camera_matrix, dist_coef)
 ```
 
-The results of the Camera Calibration and Distortion Removal:
+The results of the camera calibration and distortion removal:
 
 Right side: `Original Image`. Left side: `Undistorted Image`
 
@@ -115,7 +117,7 @@ Pipeline
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `pre_processing.py`  |
+| File  | `implementation/pre_processing.py`  |
 | Method  | `PreProcessing.load_calibration_params()`      |
 | Method  | `PreProcessing.get_undistorted_image()`   |
 
@@ -137,8 +139,8 @@ undistorted = cv.undistort(src=img,
                            dst=None,
                            newCameraMatrix=camera_matrix)
 ```
-To demonstrate this step, I will describe how I apply the distortion correction
-to one of the test images like this one:
+To demonstrate this step, I will apply the distortion correction
+to the real world conditions:
 
 Right side: `Original Image`. Left side: `Calibrated Image`
 
@@ -156,23 +158,27 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `pre_processing.py`  |
+| File  | `implementation/pre_processing.py`  |
 | Method  | `PreProcessing.get_binary_images()`      |
 
 
 
 The Algorithm for thresholding is as follows:
 
--   Apply grayscale Apply Sobel X using opencv `Sobel` method.
--   Find the 8bit Sobel and binary Sobel using `np.uint8(255 * sx_abs /
+-   Apply grayscale `Sobel X` using opencv `Sobel` method.
+-   Find the `8bit Sobel` and binary Sobel using `np.uint8(255 * sx_abs /
     np.max(sx_abs))`.
--   Get binary R channel from RGB using
+-   Get binary `R channel` from RGB using
     `r_binary[(r>=rgb_thresh[0])&(r<=rgb_thresh[1])]=1`.
--   Get binary S channel from HLS.
--   Resultant is the merger of binary Sobel and binary S channel AND'd with
-    binary R channel.
+-   Get binary `S channel` from HLS.
+-   Resultant is the merger of binary Sobel and binary `S channel` AND'd with
+    binary `R channel`.
 
-
+| Threshold    |Low   |High   | Smoothing Kernel   |
+|-----------|-------------|-------------|-------------|
+| Sobel X  | 20    | 200    | 9    |
+| R channel   | 170    | 255    | -    |
+| S channel   | 120    | 255    | -    |
 
 ``` python
 # grayscale
@@ -219,7 +225,7 @@ Right side: `Original Image`. Left side: `Binary Image`
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `perspective_transform.py`  |
+| File  | `implementation/perspective_transform.py`  |
 | Method  | `PerspectiveTransform.get_perspective_points()`      |
 | Method  | `PerspectiveTransform.get_wrapped_image()`   |
 
@@ -292,7 +298,7 @@ that the lines appear parallel in the warped image.
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `lanes_fitting.py`  |
+| File  | `implementation/lanes_fitting.py`  |
 | Method  | `LanesFitting.get_lanes_fit()`      |
 | Method  | `LanesFitting.update_lanes_fit()`   |
 
@@ -304,7 +310,7 @@ The Algorithm for detecting lane lines is as follows:
 -	Loop over `windows` and for each `window`:
 	- Identify window boundary.
     - Find nonzero pixel in `x` and `y` within window boundary and append them in `good_indices` list.
--	Extract the `left` and `right` `xy` position from `nonzero` pixel using `good_indices`.
+-	Extract the left and right `xy` position from `nonzero` pixel using `good_indices`.
 -	Apply 2nd order polynomial to the left and right pixel positions. This gives us the left and right lines polynomial fit.
 
 ```python
@@ -415,7 +421,7 @@ right_fit = np.polyfit(righty, rightx, 2)
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `metrics.py`  |
+| File  | `implementation/metrics.py`  |
 | Method  | `Metrics.get_curvature_radius()`      |
 | Method  | `Metrics.get_distance_from_center()`   |
 
@@ -455,7 +461,7 @@ right_radius /= np.absolute(2 * right_fit_meter[0])
 Algorithm for finding vehicle distance from center lane is as follows:
 -	Get `car position` which is center of the image.
 -	Get `lanes width` by taking difference of left and right polynomial fits.
--	Get `lane center` using midpoint left and right polynomial fits.
+-	Get `lane center` using midpoint of left and right polynomial fits.
 -	Get `distance from center` by taking difference of `car position` and `lane center`.
 -	Get distance in meters by multiplying `distance from center` with conversion factor.
 
@@ -485,7 +491,7 @@ center_distance = (car_position - lane_center) * x_meter_per_pixel
 
 | Source Code Reference    |  |
 |-----------|-------------|
-| File  | `perspective_transform.py`  |
+| File  | `implementation/perspective_transform.py`  |
 | Method  | `PerspectiveTransform.unwrap()`      |
 
 Algorithm for translating the found lane lines in warped image back to the original image:

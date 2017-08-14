@@ -74,20 +74,20 @@ class Visualization:
         return lanes_img
 
     @staticmethod
-    def visualize_pipeline_pyplot(img1, img2, img3, img4, img5, img6, img7, img8,
+    def visualize_pipeline_pyplot(img1, img2, img3, img4, img5, img6,
                                   desc_img1, desc_img2, desc_img3, desc_img4,
-                                  desc_img5, desc_img6, desc_img7, desc_img8):
+                                  desc_img5, desc_img6):
         import matplotlib.pyplot as plt
-        f, ax_array = plt.subplots(2, 4, figsize=(8, 8))
+        f, ax_array = plt.subplots(2, 3, figsize=(8, 8))
         f.tight_layout()
         ax_array[0, 0].imshow(img1, cmap="gray"), ax_array[0, 0].set_title(desc_img1)
         ax_array[0, 1].imshow(img2, cmap="gray"), ax_array[0, 1].set_title(desc_img2)
         ax_array[0, 2].imshow(img3, cmap="gray"), ax_array[0, 2].set_title(desc_img3)
-        ax_array[0, 3].imshow(img4, cmap="gray"), ax_array[0, 3].set_title(desc_img4)
-        ax_array[1, 0].imshow(img5, cmap="gray"), ax_array[1, 0].set_title(desc_img5)
-        ax_array[1, 1].imshow(img6, cmap="gray"), ax_array[1, 1].set_title(desc_img6)
-        ax_array[1, 2].imshow(img7, cmap="gray"), ax_array[1, 2].set_title(desc_img7)
-        ax_array[1, 3].imshow(img8, cmap="gray"), ax_array[1, 3].set_title(desc_img8)
+        ax_array[1, 0].imshow(img4, cmap="gray"), ax_array[1, 0].set_title(desc_img4)
+        ax_array[1, 1].imshow(img5, cmap="gray"), ax_array[1, 1].set_title(desc_img5)
+        ax_array[1, 2].imshow(img6, cmap="gray"), ax_array[1, 2].set_title(desc_img6)
+        # ax_array[1, 2].imshow(img7, cmap="gray"), ax_array[1, 2].set_title(desc_img7)
+        # ax_array[1, 3].imshow(img8, cmap="gray"), ax_array[1, 3].set_title(desc_img8)
         plt.show()
 
     @staticmethod
@@ -97,18 +97,21 @@ class Visualization:
         return histogram
 
     @staticmethod
-    def visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width):
+    def visualize_pipeline(resultant, img_dst,
+                           binary_image, lane_lines,
+                           radius, center_distance,
+                           lane_width):
         """
         visualize the important steps of the pipeline
         :param resultant: resultant image of the pipeline
         :param img_dst: wrapped binary image
+        :param binary_image: binary image
         :param lane_lines: wrapped binary image with lane lines
         :param radius: radius of curvature
         :param center_distance: car distance from center lane
         :param lane_width: width of the lane
         :return: None
         """
-        from helper import Helper
         import cv2 as cv
 
         # debugging parameters
@@ -120,6 +123,7 @@ class Visualization:
         # resize the image for better visualization
         resultant = cv.resize(resultant, None, fx=0.5, fy=0.5, interpolation=cv.INTER_LINEAR)
         resultant = cv.cvtColor(resultant, cv.COLOR_BGR2RGB)
+        binary_image = cv.cvtColor(binary_image, cv.COLOR_GRAY2BGR)
 
         # FONT_HERSHEY_SIMPLEX
         font = cv.QT_FONT_NORMAL
@@ -135,9 +139,8 @@ class Visualization:
         img_dst = cv.resize(img_dst, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
         lane_lines = cv.resize(lane_lines, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
 
-        # Helper.save_pipeline_resultant(resultant)
         # show the images with 1 ms delay
         # cv.imshow("warped detected lines", lane_lines)
         # cv.imshow("warped lines", img_dst)
-        # cv.imshow("result", resultant)
+        cv.imshow("result", resultant)
         cv.waitKey(1)

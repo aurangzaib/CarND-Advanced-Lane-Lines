@@ -70,7 +70,6 @@ class PerspectiveTransform:
         cv.polylines(img_src, [src_pts], True, (255, 0, 0), thickness=5)
         cv.polylines(img_dst, [dst_pts], True, (255, 0, 0), thickness=5)
 
-        Helper.save_original_and_warped_images(img_src, img_dst)
         return img_src, img_dst
 
     @staticmethod

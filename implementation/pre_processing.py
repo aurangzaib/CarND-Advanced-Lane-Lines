@@ -115,9 +115,12 @@ class PreProcessing:
         :param hls_thresh: threshold range for s channel in HLS
         :return: binary image
         """
+        from visualization import Visualization
         import numpy as np
         import cv2 as cv
 
+        is_binary_debug_enabled = False
+        # sx_thresh=(40, 180), rgb_thresh=(190, 255), hls_thresh=(100, 255)
         # grayscale
         gray = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
         gray_binary = np.zeros_like(gray)
@@ -125,7 +128,7 @@ class PreProcessing:
 
         # sobelx gradient threshold
         dx, dy = (1, 0)
-        sx = cv.Sobel(gray, cv.CV_64F, dx, dy, ksize=3)
+        sx = cv.Sobel(gray, cv.CV_64F, dx, dy, ksize=9)
         sx_abs = np.absolute(sx)
         sx_8bit = np.uint8(255 * sx_abs / np.max(sx_abs))
         sx_binary = np.zeros_like(sx_8bit)
@@ -145,5 +148,10 @@ class PreProcessing:
         # resultant of r, s and sx
         binary_image = np.zeros_like(sx_binary)
         binary_image[((sx_binary == 1) | (s_binary == 1)) & (r_binary == 1)] = 1
+        if is_binary_debug_enabled:
+            Visualization.visualize_pipeline_pyplot(img, sx_binary, r_binary,
+                                                    s_binary, binary_image, sx_8bit,
+                                                    "original", "sx binary", "r binary",
+                                                    "s binary", "resultant", "gray")
 
         return binary_image

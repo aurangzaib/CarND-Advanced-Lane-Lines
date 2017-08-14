@@ -46,6 +46,9 @@ class LaneDetection:
 
         # visualize the pipeline
         if is_debug_enabled is True:
-            Visualization.visualize_pipeline(resultant, img_dst, lane_lines, radius, center_distance, lane_width)
+            Visualization.visualize_pipeline(resultant, img_dst,
+                                             binary_image, lane_lines,
+                                             radius, center_distance,
+                                             lane_width)
 
         return lanes_fit

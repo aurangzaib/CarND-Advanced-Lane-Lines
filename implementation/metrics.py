@@ -72,4 +72,5 @@ class Metrics:
         # how much car is away from lane center
         center_distance = (car_position - lane_center) * x_meter_per_pixel
 
+        print("center distance: {}".format(center_distance))
         return center_distance[2], abs(lane_width[2])
