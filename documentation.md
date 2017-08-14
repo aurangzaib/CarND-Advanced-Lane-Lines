@@ -3,8 +3,8 @@
 **Advanced Lane Finding Project**
 =================================
 
-| Note    | |
-|-----------|-------------|
+|Note    | |
+|:-----------|:-------------|
 | **Source Code**  | For complete implementation of the project:  https://github.com/aurangzaib/CarND-Advanced-Lane-Lines  |
 | **How To Run**  | `python implementation/main.py`      |
 
@@ -46,7 +46,7 @@ successful chessboard detection.
 
 
 | Source Code Reference    |  |
-|-----------|-------------|
+|:-----------|:-------------|
 | File  | `implementation/pre_processing.py`  |
 | Method  | `PreProcessing.get_calibration_params()`      |
 
@@ -76,7 +76,7 @@ Pipeline
 #### 1. Distortion Correction:
 
 | Source Code Reference    |  |
-|-----------|-------------|
+|:-----------|:-------------|
 | File  | `implementation/pre_processing.py`  |
 | Method  | `PreProcessing.load_calibration_params()`      |
 | Method  | `PreProcessing.get_undistorted_image()`   |
@@ -104,7 +104,7 @@ Right side: `Original Image`. Left side: `Calibrated Image`
 #### 2. Color and Gradient Thresholding:
 
 | Source Code Reference    |  |
-|-----------|-------------|
+|:-----------|:-------------:|
 | File  | `implementation/pre_processing.py`  |
 | Method  | `PreProcessing.get_binary_images()`      |
 
@@ -124,7 +124,7 @@ The Algorithm for thresholding is as follows:
 
 
 | Threshold For   |Low   |High   | Smoothing Kernel   |
-|-----------|-------------|-------------|-------------|
+|:-----------|:-------------|:-------------|:-------------|
 | Sobel X  | 20    | 200    | 9    |
 | R channel   | 170    | 255    | -    |
 | S channel   | 120    | 255    | -    |
@@ -144,7 +144,7 @@ Right side: `Original Image`. Left side: `Binary Image`
 #### 3. Perspective Transform:
 
 | Source Code Reference    |  |
-|-----------|-------------|
+|:-----------|:-------------|
 | File  | `implementation/perspective_transform.py`  |
 | Method  | `PerspectiveTransform.get_perspective_points()`      |
 | Method  | `PerspectiveTransform.get_wrapped_image()`   |
@@ -166,7 +166,7 @@ Right side: `Original Image`. Left side: `Binary Image`
 This resulted in the following source and destination points:
 
 | Source    | Destination |
-|-----------|-------------|
+|:-----------|:-------------|
 | 100, 720  | 100, 1280   |
 | 585, 450  | 100, 0      |
 | 695, 450  | 620, 0      |
@@ -192,7 +192,7 @@ Right side: `Original Image`. Left side: `Warped Image`
 
 
 | Source Code Reference    |  |
-|-----------|-------------|
+|:-----------|:-------------|
 | File  | `lanes_fitting.py`  |
 | Method  | `LanesFitting.get_lanes_fit()`      |
 | Method  | `LanesFitting.update_lanes_fit()`   |
@@ -223,7 +223,7 @@ The Algorithm for updating the lane lines detected is as follows:
 #### 5. Radius of curvature and vehicle distance from center lane:
 
 | Source Code Reference    |  |
-|-----------|-------------|
+|:-----------|:-------------|
 | File  | `implementation/metrics.py`  |
 | Method  | `Metrics.get_curvature_radius()`      |
 | Method  | `Metrics.get_distance_from_center()`   |
