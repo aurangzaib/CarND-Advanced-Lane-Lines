@@ -1,13 +1,13 @@
+from lanes_fitting import LanesFitting
+from metrics import Metrics
 from perspective_transform import PerspectiveTransform
 from pre_processing import PreProcessing
 from visualization import Visualization
-from lanes_fitting import LanesFitting
-from metrics import Metrics
 
 
 class LaneDetection:
     @staticmethod
-    def pipeline(img, lanes_fit):
+    def pipeline(img, lanes_fit, camera_matrix, dist_coef):
         # debug flag
         is_debug_enabled = True
 
@@ -15,7 +15,7 @@ class LaneDetection:
         nx, ny, channels = 9, 6, 3
 
         # calibrate camera and undistort the image
-        undistorted_image = PreProcessing.get_undistorted_image(nx, ny, img)
+        undistorted_image = PreProcessing.get_undistorted_image(nx, ny, img, camera_matrix, dist_coef)
 
         # get the color and gradient threshold image
         binary_image = PreProcessing.get_binary_image(undistorted_image)

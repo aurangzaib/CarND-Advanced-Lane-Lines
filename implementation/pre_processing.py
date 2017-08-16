@@ -82,18 +82,18 @@ class PreProcessing:
         return camera_matrix, dist_coef
 
     @staticmethod
-    def get_undistorted_image(nx, ny, img, load_params=True):
+    def get_undistorted_image(nx, ny, img, camera_matrix, dist_coef, load_params=True):
         """
         Using cv.undistort with calibration params as arguments, get the undistorted image
         :param nx: number of corners in x direction
         :param ny: number of corners in y direction
+        :param camera_matrix: camera matrix found using cv.calibrateCamera
+        :param dist_coef: distortion coef found using cv.calibrateCamera
         :param img:source image
         :param load_params: flag to load or find calibration params
         :return: undistorted image
         """
         import cv2 as cv
-        # load calibration params from pickle or else find the params
-        camera_matrix, dist_coef = PreProcessing.load_calibration_params()
         # undistorted image
         undistorted = cv.undistort(src=img,
                                    cameraMatrix=camera_matrix,
