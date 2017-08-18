@@ -1,3 +1,8 @@
+import cv2 as cv
+import matplotlib.pyplot as plt
+import numpy as np
+
+
 class Visualization:
     @staticmethod
     def visualize_lanes_fit(img, lanes_img, nonzero, inds, fit):
@@ -10,8 +15,6 @@ class Visualization:
         :param fit: left and right fit
         :return lanes_img: destination warped binary image with lanes drawn
         """
-        # import numpy as np
-
         # Generate x and y values for plotting
         left_lane_inds, right_lane_inds = inds
         nonzero_x, nonzero_y = nonzero
@@ -33,9 +36,6 @@ class Visualization:
         :param fit: left and right fit
         :return lanes_img: destination warped binary image with lanes drawn
         """
-        import numpy as np
-        import cv2 as cv
-
         # Generate x and y values for plotting
         img_height = img.shape[0]
         left_lane_inds, right_lane_inds = inds
@@ -77,7 +77,6 @@ class Visualization:
     def visualize_pipeline_pyplot(img1, img2, img3, img4, img5, img6,
                                   desc_img1, desc_img2, desc_img3, desc_img4,
                                   desc_img5, desc_img6):
-        import matplotlib.pyplot as plt
         f, ax_array = plt.subplots(2, 3, figsize=(8, 8))
         f.tight_layout()
         ax_array[0, 0].imshow(img1, cmap="gray"), ax_array[0, 0].set_title(desc_img1)
@@ -92,7 +91,6 @@ class Visualization:
 
     @staticmethod
     def get_lanes_histogram(img):
-        import numpy as np
         histogram = np.sum(img[img.shape[0] // 2:, :], axis=0)
         return histogram
 
@@ -112,14 +110,6 @@ class Visualization:
         :param lane_width: width of the lane
         :return: None
         """
-        import cv2 as cv
-
-        # debugging parameters
-        # print("left radius: {}, right radius: {}".format(radius[0], radius[1]))
-        # print("distance from center: {}".format(center_distance))
-        # print("lane width: {}".format(lane_width))
-        # print("\n")
-
         # resize the image for better visualization
         resultant = cv.resize(resultant, None, fx=0.5, fy=0.5, interpolation=cv.INTER_LINEAR)
         resultant = cv.cvtColor(resultant, cv.COLOR_BGR2RGB)
@@ -139,8 +129,5 @@ class Visualization:
         img_dst = cv.resize(img_dst, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
         lane_lines = cv.resize(lane_lines, None, fx=0.4, fy=0.3, interpolation=cv.INTER_LINEAR)
 
-        # show the images with 1 ms delay
-        # cv.imshow("warped detected lines", lane_lines)
-        # cv.imshow("warped lines", img_dst)
         cv.imshow("result", resultant)
         cv.waitKey(1)

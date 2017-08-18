@@ -1,3 +1,13 @@
+import glob
+import pickle
+
+import cv2 as cv
+import matplotlib.image as mpimg
+import numpy as np
+
+from visualization import Visualization
+
+
 class PreProcessing:
     @staticmethod
     def save_calibration_params(camera_matrix, dist_coef, filename="calibration_parameters.p"):
@@ -8,7 +18,6 @@ class PreProcessing:
         :param filename: to store the pickle file
         :return: None
         """
-        import pickle
         parameters = {
             'camera_matrix': camera_matrix,
             'dist_coef': dist_coef
@@ -23,7 +32,6 @@ class PreProcessing:
         :param filename: to read the pickle file
         :return: calibration params
         """
-        import pickle
         with open(filename, mode='rb') as f:
             parameters = pickle.load(f)
         return parameters['camera_matrix'], parameters['dist_coef']
@@ -40,10 +48,6 @@ class PreProcessing:
         :param channels: channels in image, 3 here
         :return: camera matrix and distortion coef
         """
-        import matplotlib.image as mpimg
-        import cv2 as cv
-        import numpy as np
-        import glob
         imgs = glob.glob("camera_cal/*.jpg")
         # img_pts --> 2D coordinates in image
         # obj_pts --> 3D coordinates in real world
@@ -93,7 +97,7 @@ class PreProcessing:
         :param load_params: flag to load or find calibration params
         :return: undistorted image
         """
-        import cv2 as cv
+
         # undistorted image
         undistorted = cv.undistort(src=img,
                                    cameraMatrix=camera_matrix,
@@ -115,10 +119,6 @@ class PreProcessing:
         :param hls_thresh: threshold range for s channel in HLS
         :return: binary image
         """
-        from visualization import Visualization
-        import numpy as np
-        import cv2 as cv
-
         is_binary_debug_enabled = False
         # sx_thresh=(40, 180), rgb_thresh=(190, 255), hls_thresh=(100, 255)
         # grayscale

@@ -1,3 +1,6 @@
+import cv2
+import numpy as np
+
 from visualization import Visualization
 
 
@@ -12,9 +15,6 @@ class LanesFitting:
         :return: left_xy: xy positions for left lane in pixel
         :return: right_xy: xy positions for right lane in pixel
         """
-        import numpy as np
-        import cv2
-
         # Take a histogram of the bottom half of the image
         histogram = np.sum(img[np.int(img.shape[0] / 2):, :], axis=0)
 
@@ -105,8 +105,6 @@ class LanesFitting:
          Using the previously calculated Lanes Fit to avoid blind search
          Searching in a margin around previous Lanes position
          """
-        import numpy as np
-
         left_fit, right_fit = fit
 
         # Assume you now have a new warped binary image

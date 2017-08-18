@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Metrics:
     @staticmethod
     def get_curvature_radius(img, left, right):
@@ -9,7 +12,6 @@ class Metrics:
         :param right: xy pixel positions of right lane
         :return: radius of curvature
         """
-        import numpy as np
 
         img_height = img.shape[0]
         # get evenly spaces array over the range of image height

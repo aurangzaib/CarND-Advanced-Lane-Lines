@@ -1,3 +1,7 @@
+import numpy as np
+from helper import Helper
+import numpy as np
+import cv2 as cv
 class PerspectiveTransform:
     @staticmethod
     def get_perspective_points(img, offset=100):
@@ -9,8 +13,6 @@ class PerspectiveTransform:
         :param offset: margin
         :return: source and destination points
         """
-        import numpy as np
-
         # y tilt --> img_height / 2 + offset
         # x tilt --> spacing between both lanes
         x_tilt, y_tilt = 55, 450
@@ -46,10 +48,6 @@ class PerspectiveTransform:
         :param dst: destination points
         :return: images with source and destination points drawn
         """
-        from helper import Helper
-        import numpy as np
-        import cv2 as cv
-
         # dimensions of the image
         img_height, img_width = img.shape[0], img.shape[1]
 
@@ -81,7 +79,6 @@ class PerspectiveTransform:
         :param dst: destination points
         :return: warped image with perspective transform applied
         """
-        import cv2 as cv
         # get the transform matrix
         transform_matrix = cv.getPerspectiveTransform(src, dst)
         # apply perspective transform
@@ -99,7 +96,6 @@ class PerspectiveTransform:
         :param fit: polynomial fit for lanes
         :return:
         """
-        import cv2 as cv
         # get the inverse transform matrix
         inv_transform_matrix = cv.getPerspectiveTransform(dst, src)
         inv_transformed_image = PerspectiveTransform.unwrap(img, transformed_image, inv_transform_matrix, fit)
@@ -112,8 +108,6 @@ class PerspectiveTransform:
         :param transform_matrix: transformation matrix (M)
         :return:  warped binary image
         """
-        import numpy as np
-        import cv2 as cv
         transformed_image = np.copy(img)
         img_height, img_width = img.shape[0], img.shape[1]
         return cv.warpPerspective(transformed_image, transform_matrix,
@@ -129,8 +123,6 @@ class PerspectiveTransform:
         :param fit: polynomial fit for lanes
         :return: unwarped 3 channel image
         """
-        import numpy as np
-        import cv2 as cv
         # polynomial fit for left and right lanes
         right_fit, left_fit = fit
 
